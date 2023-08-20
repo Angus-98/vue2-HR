@@ -14,10 +14,11 @@ export default {
     ...mapGetters([
       'name'
     ])
-  },
-  created() {
-    this.$store.dispatch('user/getUserInfo')
   }
+  // created() {
+  //   this.$store.dispatch('user/getUserInfo')
+  // 因为用户信息不仅是首页需要用到，还要其它页面也会用到，因此在这里获取数据的话，其它页面刷新的时候是获取不到数据的，因此可以把这里的代码放到导航守卫中
+  // }
 }
 </script>
 
