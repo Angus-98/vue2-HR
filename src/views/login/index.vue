@@ -100,6 +100,7 @@ export default {
       })
     },
     handleLogin() {
+      // 登录后需要获取token，token需要数据共享并能实时响应。所以需要保存在vuex中，dispatch是专门用于调用actions中函数的方法。
       this.$store.dispatch('user/login', this.loginForm)
     }
   }
