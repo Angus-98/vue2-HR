@@ -34,6 +34,8 @@ Vue.directive('errImage', {
       // console.log('图片发生错误了')
       el.src = binding.value
     })
+    // 判断el.src是否存在，如果存在不改变src的值，不存在则设置为默认图片地址
+    el.src = el.src || binding.value
   }
 })
 
