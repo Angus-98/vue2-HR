@@ -1,4 +1,4 @@
-import { login, getUserInfo } from '@/api/user'
+import { login, getUserInfo, getUserDetailById } from '@/api/user'
 import { getToken, setToken } from '@/utils/auth'
 export default {
   namespaced: true,
@@ -28,7 +28,9 @@ export default {
     async getUserInfo(store) {
       const res = await getUserInfo()
       console.log('getUserInfo->', res)
-      store.commit('setUserInfo', res)
+      const result = await getUserDetailById(res.userId)
+      console.log('result->', result)
+      store.commit('setUserInfo', { ...res, ...result })
     }
   }
 }

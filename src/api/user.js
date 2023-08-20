@@ -19,6 +19,6 @@ export function getUserInfo() {
 // 获取员工基本信息
 export function getUserDetailById(id) {
   return request({
-    url: 'sys/user' + id
+    url: '/sys/user/' + id
   })
 }

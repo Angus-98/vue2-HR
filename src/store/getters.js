@@ -13,7 +13,7 @@ const getters = {
   sidebar: (state) => state.app.sidebar,
   device: (state) => state.app.device,
   token: (state) => state.user.token,
-  // avatar: state => state.user.avatar,
+  avatar: (state) => state.user.userInfo.staffPhoto,
   name: (state) => state.user.userInfo.username // 等价于下面的写法
 
   // name: function(state) {
