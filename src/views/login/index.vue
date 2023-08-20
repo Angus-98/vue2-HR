@@ -101,7 +101,17 @@ export default {
     },
     async handleLogin() {
       try {
+        // 我们是通过回调函数获取校验结果的，为什么需要通过回调函数拿结果呢？ -> 因为表单校验是异步完成的。因此需要通过回调函数来拿数据。
+        // 如果没有传递参数给 validate() 方法的话，会返回一个Promise对象，因此可以通过then函数拿到校验通过的结果，catch函数获取校验失败的结果。
+        // 最终 then catch 的写法比较繁琐，因此最终可以通过 async await 把校验的代码转为同步写法
+        // await this.$refs.loginForm.validate().then((res) => {
+        //   console.log('校验成功', res)
+        // }).catch((err) => {
+        //   console.log('校验失败', err)
+        // })
+
         await this.$refs.loginForm.validate()
+
         // 登录后需要获取token，token需要数据共享并能实时响应。所以需要保存在vuex中，dispatch是专门用于调用actions中函数的方法。
         await this.$store.dispatch('user/login', this.loginForm)
         // 登录成功之后跳转到首页
