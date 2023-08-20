@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
 import store from '@/store'
+import router from '@/router'
 
 // create an axios instance
 const service = axios.create({
@@ -9,10 +10,24 @@ const service = axios.create({
   timeout: 50000 // request timeout
 })
 
+const timer = 12 * 60 * 60 * 1000
+
 // request interceptor
 service.interceptors.request.use((config) => {
   const token = store.state.user.token
   if (token) {
+    // 判断token是否过期
+    // 登录时间戳
+    const loginTime = localStorage.getItem('loginTime')
+    // 当前时间戳
+    const curTime = Date.now()
+    // 用当前时间戳减去登录的时间戳是否大于规定的过期时间，如果大于则清空token以及用户信息
+    if (curTime - loginTime > timer) {
+      store.dispatch('user/logout')
+      router.push('/login')
+      // 请求拦截器中返回的错误，最终在响应拦截器中捕获到
+      return Promise.reject(new Error('登录失效 - 前端规定'))
+    }
     config.headers.Authorization = 'Bearer ' + token
   }
   return config
@@ -33,9 +48,15 @@ service.interceptors.response.use((response) => {
   }
 }, (err) => {
   // console.dir(err)
-
-  // 网络层面错误处理
-  Message.error(err.message)
+  // token过期处理 --> (注意，并不是所有的错误都有response这个属性，因此需要添加短路运算)
+  if (err.response && err.response.data.code === 10002) {
+    store.dispatch('user/logout')
+    router.push('/login')
+    Message.warning('token过期-重新登录')
+  } else {
+    // 网络层面错误处理
+    Message.error(err.message)
+  }
   // 返回错误对象给axios，Promise.reject是原生JS的一个方法，会返回一个错误对象。最终调用接口时获取到的结果就是这个错误对象
   return Promise.reject(err)
 })

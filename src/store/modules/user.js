@@ -11,6 +11,8 @@ export default {
       state.token = token
       // 数据持久化 -- 将拿到的token放在cookie中
       setToken(token)
+      // 保存登录的时间戳。Date.now()是原生js中获取时间戳的方法
+      localStorage.setItem('loginTime', Date.now())
     },
     // 保存用户信息
     setUserInfo(state, userInfo) {
