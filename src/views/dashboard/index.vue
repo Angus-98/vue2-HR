@@ -1,5 +1,6 @@
 <template>
   <div class="dashboard-container">
+    <!-- <div class="dashboard-text">name: {{ $store.getters.name }}</div> 不利用vuex提供的辅助函数的写法  -->
     <div class="dashboard-text">name: {{ name }}</div>
   </div>
 </template>
@@ -13,6 +14,9 @@ export default {
     ...mapGetters([
       'name'
     ])
+  },
+  created() {
+    this.$store.dispatch('user/getUserInfo')
   }
 }
 </script>

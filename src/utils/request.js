@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
+import store from '@/store'
 
 // create an axios instance
 const service = axios.create({
@@ -9,7 +10,13 @@ const service = axios.create({
 })
 
 // request interceptor
-service.interceptors.request.use()
+service.interceptors.request.use((config) => {
+  const token = store.state.user.token
+  if (token) {
+    config.headers.Authorization = 'Bearer ' + token
+  }
+  return config
+})
 
 // response interceptor
 service.interceptors.response.use((response) => {
