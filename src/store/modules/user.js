@@ -15,7 +15,6 @@ export default {
   actions: {
     async login(store, data) {
       const res = await login(data)
-      console.log('actions - login->', res)
       // 保存token
       store.commit('setToken', res)
     }

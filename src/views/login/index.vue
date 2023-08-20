@@ -100,10 +100,15 @@ export default {
       })
     },
     async handleLogin() {
-      // 登录后需要获取token，token需要数据共享并能实时响应。所以需要保存在vuex中，dispatch是专门用于调用actions中函数的方法。
-      await this.$store.dispatch('user/login', this.loginForm)
-      // 登录成功之后跳转到首页
-      this.$router.push('/')
+      try {
+        await this.$refs.loginForm.validate()
+        // 登录后需要获取token，token需要数据共享并能实时响应。所以需要保存在vuex中，dispatch是专门用于调用actions中函数的方法。
+        await this.$store.dispatch('user/login', this.loginForm)
+        // 登录成功之后跳转到首页
+        this.$router.push('/')
+      } catch (error) {
+        console.log('error', error)
+      }
     }
   }
 }
