@@ -26,6 +26,17 @@ Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
 // Vue.use(ElementUI)
 
+// 图片发生错误的指令
+Vue.directive('errImage', {
+  inserted(el, binding) {
+    // console.log('el ->', el)
+    el.addEventListener('error', function() {
+      // console.log('图片发生错误了')
+      el.src = binding.value
+    })
+  }
+})
+
 Vue.config.productionTip = false
 
 new Vue({

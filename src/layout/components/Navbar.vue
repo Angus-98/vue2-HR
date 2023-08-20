@@ -16,7 +16,7 @@
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <!-- <img src="@/assets/common/bigUserHeader.png" class="user-avatar"> -->
-          <img :src="avatar" class="user-avatar">
+          <img v-errImage="img" :src="avatar" class="user-avatar">
           <span class="name">{{ name }}</span>
           <i class="el-icon-caret-bottom" style="color: #fff" />
         </div>
@@ -39,11 +39,17 @@
 import { mapGetters } from 'vuex'
 // import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
+import _img from '@/assets/common/bigUserHeader.png'
 
 export default {
   components: {
     // Breadcrumb,
     Hamburger
+  },
+  data() {
+    return {
+      img: _img
+    }
   },
   computed: {
     ...mapGetters(['sidebar', 'avatar', 'name'])
@@ -54,7 +60,7 @@ export default {
     },
     async logout() {
       await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      this.$router.push('/login')
     }
   }
 }

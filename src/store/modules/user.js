@@ -1,5 +1,5 @@
 import { login, getUserInfo, getUserDetailById } from '@/api/user'
-import { getToken, setToken } from '@/utils/auth'
+import { getToken, setToken, removeToken } from '@/utils/auth'
 export default {
   namespaced: true,
   state: {
@@ -15,6 +15,15 @@ export default {
     // 保存用户信息
     setUserInfo(state, userInfo) {
       state.userInfo = userInfo
+    },
+    // 清除token
+    removeToken(state) {
+      state.token = ''
+      removeToken()
+    },
+    // 清除用户信息
+    removeUserInfo(state) {
+      state.userInfo = {}
     }
   },
   actions: {
@@ -27,10 +36,15 @@ export default {
     // 获取用户基本信息
     async getUserInfo(store) {
       const res = await getUserInfo()
-      console.log('getUserInfo->', res)
+      // console.log('getUserInfo->', res)
       const result = await getUserDetailById(res.userId)
-      console.log('result->', result)
+      // console.log('result->', result)
       store.commit('setUserInfo', { ...res, ...result })
+    },
+    // 退出登录
+    logout(store) {
+      store.commit('removeToken')
+      store.commit('removeUserInfo')
     }
   }
 }
