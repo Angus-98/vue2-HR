@@ -8,8 +8,12 @@ router.beforeEach((to, from, next) => {
   // console.log('to->', to, 'form->', from)
   // console.log(store.state.user.token)
   if (store.state.user.token) {
-    // 如果有token，表示登录状态，直接放行
-    next()
+    // 如果有token，表示登录状态，直接放行。当前页面在首页的话，则不能点击回退到登录页
+    if (to.path === '/login') {
+      next('/')
+    } else {
+      next()
+    }
   } else {
     // 判断此时用户跳转的是否为登录页面，如果是则放行，否则跳转到登录页面
     const white = ['/login', '/404']// 白名单，存在这个数组中的路径，可以直接放行
