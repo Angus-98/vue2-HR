@@ -115,3 +115,38 @@ export function param2Obj(url) {
   })
   return obj
 }
+
+// 此处的id是表示一级部门的pid，接口返回的数据中一级部门的pid就是字符串
+// export function listToTree(list, id) {
+//   // console.log('List-tree', list, 'ID->', id)
+
+//   const arr = []
+//   list.forEach((item) => {
+//     if (item.pid === id) {
+//       // 如果item中的pid等于id（id就是传过来的pid）的话,说明就是一级部门
+//       arr.push(item)
+//       item.children = []
+//       list.forEach((val) => {
+//         if (val.pid === item.id) {
+//           item.children.push(val)
+//         }
+//       })
+//     }
+//   })
+//   return arr
+// }
+// listToTree处理树形结构的数据就是根据一级部门的id来查找二级部门，因为当一级部门的id和另外一个部门的pid相同的时候，就说明该部门为一级部门的子部门
+// 当第二次循环的时候，里面定义的参数的pid的值等于一级部门的id的时候，说明此部门就是一级部门的子部门。
+
+// 简化
+export function listToTree(list, id) {
+  const arr = []
+  list.forEach((item, index) => {
+    if (item.pid === id) {
+      arr.push(item)
+      const res = listToTree(list, item.id)
+      item.children = res
+    }
+  })
+  return arr
+}

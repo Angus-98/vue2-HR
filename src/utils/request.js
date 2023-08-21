@@ -40,7 +40,7 @@ service.interceptors.response.use((response) => {
 
   // 数据层面错误处理
   if (success) {
-    Message.success(message)
+    // Message.success(message)
     return data
   } else {
     Message.error(message)

@@ -18,6 +18,8 @@
 
 <script>
 import TreeTool from './components/tree-tool.vue'
+import { getDepartments } from '@/api/departments'
+import { listToTree } from '@/utils/index'
 export default {
   components: {
     TreeTool
@@ -28,26 +30,16 @@ export default {
         name: '组织架构',
         manager: '负责人'
       },
-      treeData: [
-        {
-          name: '一级 1',
-          manager: '1'
-        },
-        {
-          name: '二级 1',
-          manager: '2',
-          children: [
-            {
-              name: '二级 2',
-              manager: '3'
-            },
-            {
-              name: '二级 3',
-              manager: '4'
-            }
-          ]
-        }
-      ]
+      treeData: []
+    }
+  },
+  created() {
+    this.getDepartments()
+  },
+  methods: {
+    async getDepartments() {
+      const res = await getDepartments()
+      this.treeData = listToTree(res.depts, '')// 这里传的空字符串表示是一级部门，因为接口返回的数据中，一级部门的pid是空字符串
     }
   }
 }
