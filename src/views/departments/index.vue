@@ -3,20 +3,7 @@
     <div class="app-container">
       <el-card class="card-box">
         <!-- 公司名称 -->
-        <el-row type="flex" justify="space-between">
-          <el-col>组织架构</el-col>
-          <el-col>
-            <el-row type="flex" justify="end">
-              <span class="manager">负责人</span>
-              <el-dropdown>
-                <span>操作<i class="el-icon-arrow-down el-icon--right" /></span>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item>添加子部门</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-            </el-row>
-          </el-col>
-        </el-row>
+        <TreeTool :is-compony="true" :tree-node="compony" />
 
         <!-- 部门名称 -->
         <el-tree :data="treeData" :props="{label:'name'}">
@@ -37,6 +24,10 @@ export default {
   },
   data() {
     return {
+      compony: {
+        name: '组织架构',
+        manager: '负责人'
+      },
       treeData: [
         {
           name: '一级 1',
