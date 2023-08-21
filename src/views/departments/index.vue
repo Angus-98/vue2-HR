@@ -21,10 +21,10 @@
       >
         <el-form ref="form" label-width="150px" class="demo-ruleForm" :rules="rules" :model="formData">
           <el-form-item label="部门名称" prop="name">
-            <el-input v-model="formData.name" placeholder="1-50字符" />
+            <el-input v-model.trim="formData.name" placeholder="1-50字符" />
           </el-form-item>
           <el-form-item label="部门编码" prop="code">
-            <el-input v-model="formData.code" placeholder="1-50字符" />
+            <el-input v-model.trim="formData.code" placeholder="1-50字符" />
           </el-form-item>
           <el-form-item label="部门负责人" prop="manager">
             <el-select v-model="formData.manager" placeholder="请选择部门负责人">
@@ -68,11 +68,20 @@ export default {
     */
     const checkName = (rule, value, callback) => {
       // console.log('rule->', rule, 'value->', value, 'callback->', callback)
+      let sameDept
+
+      if (this.formData.id) {
+        sameDept = this.depts.filter((item) => {
+          // 需要判断2个部门的id相同，就可以说明他们是同一个部门。反过来说，就是当判断到2个部门的id不相同的时候，说明他们就不是同一个部门。
+          return item.id !== this.formData.id && item.pid === this.formData.pid
+        })
+      } else {
+        sameDept = this.depts.filter((item) => {
+          return item.pid === this.formData.pid
+        })
+      }
 
       // 找同级部门
-      const sameDept = this.depts.filter((item) => {
-        return item.pid === this.formData.pid
-      })
       // console.log('sameDept ->', sameDept) //获取点击的部门数据
       const isRepeat = sameDept.some((item) => {
         return item.name === value
@@ -86,9 +95,16 @@ export default {
     }
     // 自定义校验部门编码是否重复
     const checkCode = (rule, value, callback) => {
-      const isRepeat = this.depts.some((item) => {
-        return item.code === value
-      })
+      let isRepeat
+      if (this.formData.id) {
+        isRepeat = this.depts.some((item) => {
+          return item.id !== this.formData.id && item.code === value
+        })
+      } else {
+        isRepeat = this.depts.some((item) => {
+          return item.code === value
+        })
+      }
       if (isRepeat) {
         callback('部门编码重复')
       } else {
