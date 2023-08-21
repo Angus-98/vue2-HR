@@ -12,9 +12,10 @@
         <el-dropdown>
           <span>操作<i class="el-icon-arrow-down el-icon--right" /></span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>添加子部门</el-dropdown-item>
-            <el-dropdown-item v-if="!isCompony">编辑部门</el-dropdown-item>
-            <el-dropdown-item v-if="!isCompony">删除部门</el-dropdown-item>
+            <!-- 默认情况下，组件是不能直接绑定原生js事件。vue专门提供了 .native。这样就可以直接在组件上绑定原生的js事件 -->
+            <el-dropdown-item @click.native="addFn">添加子部门</el-dropdown-item>
+            <el-dropdown-item v-if="!isCompony" @click.native="editFn">编辑部门</el-dropdown-item>
+            <el-dropdown-item v-if="!isCompony" @click.native="delFn">删除部门</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </el-row>
@@ -33,6 +34,18 @@ export default {
     isCompony: {
       type: Boolean,
       default: false
+    }
+  },
+  methods: {
+    addFn() {
+      // 子传父
+      this.$emit('addEvent', this.treeNode)
+    },
+    delFn() {
+      this.$emit('delEvent', this.treeNode)
+    },
+    editFn() {
+      this.$emit('editEvent', this.treeNode)
     }
   }
 }
