@@ -13,7 +13,7 @@
         </el-tree>
       </el-card>
       <el-dialog
-        title="提示"
+        :title="formData.id ? '编辑部门' : '新增部门'"
         :visible="dialogVisible"
         width="60%"
         center

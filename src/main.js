@@ -39,6 +39,13 @@ Vue.directive('errImage', {
   }
 })
 
+// 注册全局组件
+// import PageTools from '@/components/PageTools'
+// Vue.component('PageTools', PageTools)
+
+import Myplugin from '@/components/index'
+Vue.use(Myplugin)
+
 Vue.config.productionTip = false
 
 new Vue({
